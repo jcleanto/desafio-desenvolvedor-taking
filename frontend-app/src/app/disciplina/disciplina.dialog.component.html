@@ -1,0 +1,20 @@
+<h2 mat-dialog-title>{{data.isEditingDisciplina ? 'Editar' : 'Criar'}} Disciplina</h2>
+<form [formGroup]="disciplinaForm" #formDirective="ngForm" (ngSubmit)="createOrUpdate(formDirective)">
+  <mat-dialog-content style="display: flex; align-items: center; padding-top: 4px">
+    <mat-form-field appearance="outline">
+      <input matInput formControlName="name" placeholder="Nome do Disciplina" type="text" maxlength="30" #nameInput
+        autocomplete="off">
+      <mat-error NgIf="disciplinaForm.get('name')?.invalid">{{getErrorMessage('name')}}
+        <mat-hint align="end">{{nameInput.value.length || 0}}/20</mat-hint>
+      </mat-error>
+    </mat-form-field>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button mat-raised-button color="accent" (click)="cancelEdit()" type="button">
+      Cancelar
+    </button>
+    <button mat-flat-button [disabled]="disciplinaForm.invalid" color="primary" type="submit">
+      Salvar
+    </button>
+  </mat-dialog-actions>
+</form>

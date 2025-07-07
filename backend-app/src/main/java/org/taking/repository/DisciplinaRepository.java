@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Optional;
 import javax.enterprise.context.ApplicationScoped;
 import org.apache.commons.text.WordUtils;
-import org.taking.model.Curso;
 import org.taking.model.Disciplina;
 
 @ApplicationScoped

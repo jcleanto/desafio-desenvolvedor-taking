@@ -1,44 +1,9 @@
-<mat-card class="create-card" NgIf="!isEditingCurso; else editingCursoTemplate">
-  <form [formGroup]="cursoForm" #formDirective="ngForm" (ngSubmit)="create(formDirective)">
-    <mat-form-field>
-      <input matInput formControlName="name" placeholder="Nome do Curso" type="text" maxlength="30" #nameInput
-        autocomplete="off">
-      <mat-error NgIf="cursoForm.get('name')?.invalid">{{getErrorMessage('name')}}
-        <mat-hint align="end">{{nameInput.value.length || 0}}/20</mat-hint>
-      </mat-error>
-    </mat-form-field>
-
-    <button mat-raised-button [disabled]="cursoForm.invalid" color="primary" type="sumbit">
-      Criar Curso
-    </button>
-  </form>
-</mat-card>
-
-<ng-template #editingCursoTemplate>
-  <mat-card class="create-card">
-    <form [formGroup]="cursoForm" #formDirective="ngForm" (ngSubmit)="update()">
-      <mat-form-field>
-        <input matInput formControlName="name" placeholder="Nome do Curso" type="text" maxlength="30" #nameInput
-          autocomplete="off">
-        <mat-error *ngIf="cursoForm.get('name')?.invalid">{{getErrorMessage('name')}}
-          <mat-hint align="end">{{nameInput.value.length || 0}}/20</mat-hint>
-        </mat-error>
-      </mat-form-field>
-
-      <button mat-raised-button [disabled]="cursoForm.invalid" color="primary" type="sumbit">
-        Atualizar Curso
-      </button>
-
-      <button mat-raised-button color="accent" (click)="cancelEdit()">
-        Cancelar
-      </button>
-    </form>
-  </mat-card>
-</ng-template>
-
+<button mat-raised-button color="primary" (click)="openCursoDialog()" style="margin-bottom: 20px;">
+  Criar Curso
+</button>
 <table mat-table [dataSource]="cursos" class="mat-elevation-z8">
 
-  <!-- Position Column -->
+  <!-- Id Column -->
   <ng-container matColumnDef="id">
     <th mat-header-cell *matHeaderCellDef> Id </th>
     <td mat-cell *matCellDef="let curso"> {{curso.id}} </td>
@@ -46,7 +11,7 @@
 
   <!-- Name Column -->
   <ng-container matColumnDef="name">
-    <th mat-header-cell *matHeaderCellDef> Name </th>
+    <th mat-header-cell *matHeaderCellDef> Nome </th>
     <td mat-cell *matCellDef="let curso" #cursoName>
       {{curso.name}}
     </td>
@@ -56,7 +21,7 @@
   <ng-container matColumnDef="action">
     <th mat-header-cell *matHeaderCellDef></th>
     <td mat-cell *matCellDef="let curso">
-      <button mat-icon-button (click)="edit(curso)" color="primary">
+      <button mat-icon-button (click)="openCursoDialog(curso)" color="primary">
         <mat-icon>edit</mat-icon>
       </button>
       <button mat-icon-button (click)="delete(curso)" color="primary">

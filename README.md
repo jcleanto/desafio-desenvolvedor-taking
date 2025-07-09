@@ -20,7 +20,7 @@ Obs.: Ainda não foi adicionado o docker e docker-compose, bem como o Keycloak (
 Build do projeto Quarkus (backend-app):
 ```bash
 $ cd backend-app/
-$ ./mvnw quarkus-dev
+$ ./mvnw quarkus:dev
 ```
 
 Build do projeto Angular (frontend-app):

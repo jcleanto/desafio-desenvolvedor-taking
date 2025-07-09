@@ -13,8 +13,6 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import org.taking.dto.CursoSemestreDisciplinaDTO;
-import org.taking.model.CursoSemestreDisciplina;
-import org.taking.model.CursoSemestreDisciplinaKey;
 import org.taking.service.CursoSemestreDisciplinaService;
 
 import lombok.AllArgsConstructor;

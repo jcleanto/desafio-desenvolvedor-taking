@@ -29,6 +29,12 @@ public class SemestreController {
 
     private final SemestreService semestreService;
 
+    /**
+     * Método GET para buscar uma lista de Semestre com filtro por semestreName opcional.
+     * 
+     * @param semestreName
+     * @return Response
+     */
     @GET
     public Response getCursos(
             @QueryParam("name") @DefaultValue("") String semestreName
@@ -36,25 +42,40 @@ public class SemestreController {
         try {
             return Response.ok(semestreService.getSemestres(semestreName)).build();
         } catch (Exception e) {
+            // retorna como http 400, em caso de erro
             return Response.status(Status.BAD_REQUEST).build();
         }
     }
 
+    /**
+     * Método GET para buscar o Semestre pelo id.
+     * 
+     * @param id
+     * @return Response
+     */
     @GET
     @Path("/{id}")
     public Response getById(@PathParam("id") long id) {
         try {
             final var semestreByIdOpt = semestreService.findSemestreById(id);
             if (semestreByIdOpt.isEmpty()) {
+                // retorna http 404, caso não encontre o Semestre
                 return Response.status(Status.NOT_FOUND).build();
             }
 
             return Response.ok(semestreByIdOpt.get()).build();
         } catch (Exception e) {
+            // retorna como http 400, em caso de erro
             return Response.status(Status.BAD_REQUEST).build();
         }
     }
 
+    /**
+     * Método POST para criar um novo Semestre.
+     * 
+     * @param semestre
+     * @return Response
+     */
     @POST
     public Response create(Semestre semestre) {
         try {
@@ -62,13 +83,22 @@ public class SemestreController {
             return Response.noContent().build();
         } catch (Exception e) {
             if (e instanceof InvalidAttributesException) {
+                // retorna como http 409, em caso de conflito
                 return Response.status(Status.CONFLICT).entity(Map.of("message", e.getMessage())).build();
             }
 
+            // retorna como http 400, em caso de erro
             return Response.status(Status.BAD_REQUEST).build();
         }
     }
 
+    /**
+     * Método PUT para atualizar um Semestre.
+     * 
+     * @param semestreId
+     * @param semestre
+     * @return Response
+     */
     @PUT
     @Path("/{id}")
     public Response replace(@PathParam("id") long semestreId, Semestre semestre) {
@@ -76,18 +106,27 @@ public class SemestreController {
             return Response.ok(semestreService.replace(semestreId, semestre)).build();
         } catch (Exception e) {
             if (e instanceof InvalidParameterException) {
+                // retorna com http 404, em caso não encontre o Semestre a ser atualizado
                 return Response.status(Status.NOT_FOUND).entity(Map.of("message", e.getMessage())).build();
             }
 
+            // retorna como http 400, em caso de qualquer outro erro
             return Response.status(Status.BAD_REQUEST).build();
         }
     }
 
+    /**
+     * Método DELETE para deletar um Semestre.
+     * 
+     * @param semestreId
+     * @return Response
+     */
     @DELETE
     @Path("/{id}")
-    public Response update(@PathParam("id") long semestreId) {
+    public Response delete(@PathParam("id") long semestreId) {
         var isDeleted = semestreService.delete(semestreId);
         if (!isDeleted) {
+            // retorna http 304, em caso de já ter sido deletado
             return Response.notModified().build();
         }
         return Response.noContent().build();

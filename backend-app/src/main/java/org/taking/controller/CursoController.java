@@ -28,6 +28,12 @@ public class CursoController {
 
     private final CursoService cursoService;
 
+    /**
+     * Método GET para buscar uma lista de Curso com filtro por cursoName opcional.
+     * 
+     * @param cursoName
+     * @return Response
+     */
     @GET
     public Response getCursos(
             @QueryParam("name") @DefaultValue("") String cursoName
@@ -35,25 +41,40 @@ public class CursoController {
         try {
             return Response.ok(cursoService.getCursos(cursoName)).build();
         } catch (Exception e) {
+            // retorna como http 400, em caso de erro
             return Response.status(Status.BAD_REQUEST).build();
         }
     }
 
+    /**
+     * Método GET para buscar o Curso pelo id.
+     * 
+     * @param id
+     * @return Response
+     */
     @GET
     @Path("/{id}")
     public Response getById(@PathParam("id") long id) {
         try {
             final var cursoByIdOpt = cursoService.findCursoById(id);
             if (cursoByIdOpt.isEmpty()) {
+                // retorna http 404, caso não encontre o Curso
                 return Response.status(Status.NOT_FOUND).build();
             }
 
             return Response.ok(cursoByIdOpt.get()).build();
         } catch (Exception e) {
+            // retorna como http 400, em caso de erro
             return Response.status(Status.BAD_REQUEST).build();
         }
     }
 
+    /**
+     * Método POST para criar um novo Curso.
+     * 
+     * @param curso
+     * @return Response
+     */
     @POST
     public Response create(Curso curso) {
         try {
@@ -61,13 +82,22 @@ public class CursoController {
             return Response.noContent().build();
         } catch (Exception e) {
             if (e instanceof InvalidAttributesException) {
+                // retorna como http 409, em caso de conflito
                 return Response.status(Status.CONFLICT).entity(Map.of("message", e.getMessage())).build();
             }
 
+            // retorna como http 400, em caso de qualquer outro erro
             return Response.status(Status.BAD_REQUEST).build();
         }
     }
 
+    /**
+     * Método PUT para atualizar um Curso.
+     * 
+     * @param cursoId
+     * @param curso
+     * @return Response
+     */
     @PUT
     @Path("/{id}")
     public Response replace(@PathParam("id") long cursoId, Curso curso) {
@@ -75,20 +105,30 @@ public class CursoController {
             return Response.ok(cursoService.replace(cursoId, curso)).build();
         } catch (Exception e) {
             if (e instanceof InvalidParameterException) {
+                // retorna com http 404, em caso não encontre o Curso a ser atualizado
                 return Response.status(Status.NOT_FOUND).entity(Map.of("message", e.getMessage())).build();
             }
 
+            // retorna como http 400, em caso de qualquer outro erro
             return Response.status(Status.BAD_REQUEST).build();
         }
     }
 
+    /**
+     * Método DELETE para deletar um Curso.
+     * 
+     * @param cursoId
+     * @return Response
+     */
     @DELETE
     @Path("/{id}")
-    public Response update(@PathParam("id") long cursoId) {
+    public Response delete(@PathParam("id") long cursoId) {
         var isDeleted = cursoService.delete(cursoId);
         if (!isDeleted) {
+            // retorna http 304, em caso de já ter sido deletado
             return Response.notModified().build();
         }
+
         return Response.noContent().build();
     }
 

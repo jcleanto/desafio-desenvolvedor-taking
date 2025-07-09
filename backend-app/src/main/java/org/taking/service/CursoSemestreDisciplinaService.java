@@ -10,6 +10,7 @@ import javax.transaction.Transactional;
 import org.apache.commons.lang3.Validate;
 import org.taking.dto.CursoSemestreDisciplinaDTO;
 import org.taking.model.CursoSemestreDisciplina;
+import org.taking.model.CursoSemestreDisciplinaKey;
 import org.taking.repository.CursoSemestreDisciplinaRepository;
 
 import io.quarkus.hibernate.orm.panache.PanacheQuery;
@@ -27,8 +28,12 @@ public class CursoSemestreDisciplinaService {
   }
 
   @Transactional
-  public void create(CursoSemestreDisciplina cursoSemestreDisciplina) throws InvalidAttributesException {
-    Validate.notNull(cursoSemestreDisciplina, "CursoSemestreDisciplina não pode ser nulo");
+  public void create(CursoSemestreDisciplinaDTO cursoSemestreDisciplinaDTO) throws InvalidAttributesException {
+    Validate.notNull(cursoSemestreDisciplinaDTO, "CursoSemestreDisciplina não pode ser nulo");
+
+    CursoSemestreDisciplinaKey cursoSemestreDisciplinaKey = new CursoSemestreDisciplinaKey(cursoSemestreDisciplinaDTO.getCurso().getId(), cursoSemestreDisciplinaDTO.getSemestre().getId(), cursoSemestreDisciplinaDTO.getDisciplina().getId());
+    CursoSemestreDisciplina cursoSemestreDisciplina = new CursoSemestreDisciplina();
+    cursoSemestreDisciplina.setCursoSemestreDisciplinaKey(cursoSemestreDisciplinaKey);
 
     cursoSemestreDisciplinaRepository.persist(cursoSemestreDisciplina);
   }

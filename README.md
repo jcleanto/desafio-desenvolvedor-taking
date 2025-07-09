@@ -14,6 +14,7 @@ Obs.: Ainda não foi adicionado o docker e docker-compose, bem como o Keycloak (
 
 - Maven 3.8.1+
 - JDK 11+
+- Angular 19+
 
 ## Iniciando a aplicação
 

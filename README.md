@@ -4,6 +4,10 @@ Desafio de desenvolvedor para processo seletivo da empresa Taking.
 
 Nessa versão estão contemplados os CRUDs de Cursos, Semestres, Disciplinas e Montagem da Grade Curricular (entidade CursoSemestreDisciplina).
 
+Foi utilizado o padrão MVC no backend separado por contextos: controller, service, model e repository.
+
+Foi utilizada a biblioteca @angular/material para criar uma interface responsiva e agradável ao usuário (UX).
+
 Obs.: Ainda não foi adicionado o docker e docker-compose, bem como o Keycloak (autenticação).
 
 ## Requisitos

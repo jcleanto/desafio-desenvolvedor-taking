@@ -1,4 +1,4 @@
-# Projeto para administrar alunos, professores e cursos como frontend em Angular 19 e backend usando o framework Quarkus (Java) 
+# Projeto para administrar alunos, professores e cursos com o frontend em Angular 19 e backend usando o framework Quarkus (Java) 
 
 Desafio de desenvolvedor para processo seletivo da empresa Taking.
 

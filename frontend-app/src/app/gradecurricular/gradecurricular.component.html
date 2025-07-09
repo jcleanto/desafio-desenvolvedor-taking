@@ -1,0 +1,42 @@
+<button mat-raised-button color="primary" (click)="openGradecurricularDialog()" style="margin-bottom: 20px;">
+  Adicionar Disciplina
+</button>
+<table mat-table [dataSource]="cursoSemestreDisciplinas" class="mat-elevation-z8">
+
+  <!-- Curso Name Column -->
+  <ng-container matColumnDef="curso_name">
+    <th mat-header-cell *matHeaderCellDef> Curso </th>
+    <td mat-cell *matCellDef="let cursoSemestreDisciplina" #cursoName>
+      {{cursoSemestreDisciplina.curso.name}}
+    </td>
+  </ng-container>
+
+  <!-- Semestre Name Column -->
+  <ng-container matColumnDef="semestre_name">
+    <th mat-header-cell *matHeaderCellDef> Semestre </th>
+    <td mat-cell *matCellDef="let cursoSemestreDisciplina" #semestreName>
+      {{cursoSemestreDisciplina.semestre.name}}
+    </td>
+  </ng-container>
+
+  <!-- Disciplina Name Column -->
+  <ng-container matColumnDef="disciplina_name">
+    <th mat-header-cell *matHeaderCellDef> Disciplina </th>
+    <td mat-cell *matCellDef="let cursoSemestreDisciplina" #semestreName>
+      {{cursoSemestreDisciplina.disciplina.name}}
+    </td>
+  </ng-container>
+
+  <!-- Action Column -->
+  <ng-container matColumnDef="action">
+    <th mat-header-cell *matHeaderCellDef></th>
+    <td mat-cell *matCellDef="let cursoSemestreDisciplina">
+      <button mat-icon-button (click)="delete(cursoSemestreDisciplina)" color="primary">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>

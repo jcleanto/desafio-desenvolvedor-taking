@@ -1,0 +1,37 @@
+<h2 mat-dialog-title>Adicionar Disciplina</h2>
+<form [formGroup]="gradeCurricularForm" #formDirective="ngForm" (ngSubmit)="create(formDirective)">
+  <mat-dialog-content style="display: flex; align-items: center; padding-top: 4px">
+    <mat-form-field appearance="outline" style="margin-right: 4px;">
+      <mat-label>Curso</mat-label>
+      <mat-select formControlName="curso">
+        @for (curso of data.cursos; track curso) {
+          <mat-option [value]="curso">{{curso.name}}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="outline" style="margin-right: 4px;">
+      <mat-label>Semestre</mat-label>
+      <mat-select formControlName="semestre">
+        @for (semestre of data.semestres; track semestre) {
+          <mat-option [value]="semestre">{{semestre.name}}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Disciplina</mat-label>
+      <mat-select formControlName="disciplina">
+        @for (disciplina of data.disciplinas; track disciplina) {
+          <mat-option [value]="disciplina">{{disciplina.name}}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button mat-raised-button color="accent" (click)="cancel()" type="button">
+      Cancelar
+    </button>
+    <button mat-flat-button [disabled]="gradeCurricularForm.invalid" color="primary" type="submit">
+      Salvar
+    </button>
+  </mat-dialog-actions>
+</form>

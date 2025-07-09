@@ -5,9 +5,10 @@
       [opened]="(isHandset$ | async) === false">
     <mat-toolbar>Menu</mat-toolbar>
     <mat-nav-list>
-      <a mat-list-item href="/curso">Cursos</a>
-      <a mat-list-item href="/semestre">Semestres</a>
-      <a mat-list-item href="/disciplina">Disciplinas</a>
+      <a mat-list-item [routerLink]="['/curso']">Cursos</a>
+      <a mat-list-item [routerLink]="['/semestre']">Semestres</a>
+      <a mat-list-item [routerLink]="['/disciplina']">Disciplinas</a>
+      <a mat-list-item [routerLink]="['/gradecurricular']">Grades Curriculares</a>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>

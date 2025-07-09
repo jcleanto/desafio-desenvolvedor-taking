@@ -1,4 +1,4 @@
-# code-with-quarkus
+# BackendApp
 
 This project uses Quarkus, the Supersonic Subatomic Java Framework.
 

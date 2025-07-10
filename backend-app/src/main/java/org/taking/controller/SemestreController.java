@@ -36,7 +36,7 @@ public class SemestreController {
      * @return Response
      */
     @GET
-    public Response getCursos(
+    public Response getSemestres(
             @QueryParam("name") @DefaultValue("") String semestreName
     ) {
         try {

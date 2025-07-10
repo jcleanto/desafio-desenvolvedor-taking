@@ -46,9 +46,7 @@ public class CursoSemestreDisciplinaService {
     Optional<CursoSemestreDisciplina> cursoSemestreDisciplina = query.singleResultOptional();
     Validate.notNull(cursoSemestreDisciplina, "CursoSemestreDisciplina não pode ser nulo");
 
-    if (cursoSemestreDisciplina != null) {
-      cursoSemestreDisciplinaRepository.delete(cursoSemestreDisciplina.get());
-    }
+    cursoSemestreDisciplinaRepository.delete(cursoSemestreDisciplina.get());
   }
   
 }

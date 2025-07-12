@@ -3,15 +3,21 @@ package org.taking.service;
 import java.util.List;
 import java.util.Optional;
 
-import javax.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.ApplicationScoped;
 import javax.naming.directory.InvalidAttributesException;
-import javax.transaction.Transactional;
+import jakarta.transaction.Transactional;
 
 import org.apache.commons.lang3.Validate;
 import org.taking.dto.CursoSemestreDisciplinaDTO;
+import org.taking.model.Curso;
 import org.taking.model.CursoSemestreDisciplina;
 import org.taking.model.CursoSemestreDisciplinaKey;
+import org.taking.model.Disciplina;
+import org.taking.model.Semestre;
+import org.taking.repository.CursoRepository;
 import org.taking.repository.CursoSemestreDisciplinaRepository;
+import org.taking.repository.DisciplinaRepository;
+import org.taking.repository.SemestreRepository;
 
 import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.quarkus.panache.common.Parameters;
@@ -22,6 +28,9 @@ import lombok.AllArgsConstructor;
 public class CursoSemestreDisciplinaService {
 
   private final CursoSemestreDisciplinaRepository cursoSemestreDisciplinaRepository;
+  private final CursoRepository cursoRepository;
+  private final SemestreRepository semestreRepository;
+  private final DisciplinaRepository disciplinaRepository;
 
   public List<CursoSemestreDisciplina> getCursoSemestreDisciplinas() {
     return cursoSemestreDisciplinaRepository.listAll();
@@ -33,8 +42,15 @@ public class CursoSemestreDisciplinaService {
 
     // cria a chave primária composta, utilizando os ids de cada entidade (Curso, Semestre e Disciplina), que estão populados no DTO
     CursoSemestreDisciplinaKey cursoSemestreDisciplinaKey = new CursoSemestreDisciplinaKey(cursoSemestreDisciplinaDTO.getCurso().getId(), cursoSemestreDisciplinaDTO.getSemestre().getId(), cursoSemestreDisciplinaDTO.getDisciplina().getId());
+    Curso curso = cursoRepository.findById(cursoSemestreDisciplinaDTO.getCurso().getId());
+    Semestre semestre = semestreRepository.findById(cursoSemestreDisciplinaDTO.getSemestre().getId());
+    Disciplina disciplina = disciplinaRepository.findById(cursoSemestreDisciplinaDTO.getDisciplina().getId());
+    
     CursoSemestreDisciplina cursoSemestreDisciplina = new CursoSemestreDisciplina();
     cursoSemestreDisciplina.setCursoSemestreDisciplinaKey(cursoSemestreDisciplinaKey);
+    cursoSemestreDisciplina.setCurso(curso);
+    cursoSemestreDisciplina.setSemestre(semestre);
+    cursoSemestreDisciplina.setDisciplina(disciplina);
 
     cursoSemestreDisciplinaRepository.persist(cursoSemestreDisciplina);
   }
@@ -43,10 +59,21 @@ public class CursoSemestreDisciplinaService {
   public void delete(CursoSemestreDisciplinaDTO cursoSemestreDisciplinaDTO) {
     // realiza uma busca pela chave primária composta
     PanacheQuery<CursoSemestreDisciplina> query = cursoSemestreDisciplinaRepository.find("curso_id = :cursoId and semestre_id = :semestreId and disciplina_id = :disciplinaId", Parameters.with("cursoId", cursoSemestreDisciplinaDTO.getCurso().getId()).and("semestreId", cursoSemestreDisciplinaDTO.getSemestre().getId()).and("disciplinaId", cursoSemestreDisciplinaDTO.getDisciplina().getId()));
-    Optional<CursoSemestreDisciplina> cursoSemestreDisciplina = query.singleResultOptional();
-    Validate.notNull(cursoSemestreDisciplina, "CursoSemestreDisciplina não pode ser nulo");
+    Optional<CursoSemestreDisciplina> cursoSemestreDisciplinaOptional = query.singleResultOptional();
+    Validate.notNull(cursoSemestreDisciplinaOptional, "CursoSemestreDisciplina não pode ser nulo");
 
-    cursoSemestreDisciplinaRepository.delete(cursoSemestreDisciplina.get());
+
+    if (cursoSemestreDisciplinaOptional.isPresent()) {
+      CursoSemestreDisciplina cursoSemestreDisciplina = cursoSemestreDisciplinaOptional.get();
+      cursoSemestreDisciplina.setCurso(null);
+      cursoSemestreDisciplina.setSemestre(null);
+      cursoSemestreDisciplina.setDisciplina(null);
+      CursoSemestreDisciplinaKey cursoSemestreDisciplinaKey = new CursoSemestreDisciplinaKey(cursoSemestreDisciplinaDTO.getCurso().getId(), cursoSemestreDisciplinaDTO.getSemestre().getId(), cursoSemestreDisciplinaDTO.getDisciplina().getId());
+      cursoSemestreDisciplina.setCursoSemestreDisciplinaKey(cursoSemestreDisciplinaKey);
+      cursoSemestreDisciplinaRepository.delete(cursoSemestreDisciplina);
+    }
+    
+    // cursoSemestreDisciplinaRepository.delete("curso_id = :cursoId and semestre_id = :semestreId and disciplina_id = :disciplinaId", Parameters.with("cursoId", cursoSemestreDisciplinaDTO.getCurso().getId()).and("semestreId", cursoSemestreDisciplinaDTO.getSemestre().getId()).and("disciplinaId", cursoSemestreDisciplinaDTO.getDisciplina().getId()));
   }
   
 }

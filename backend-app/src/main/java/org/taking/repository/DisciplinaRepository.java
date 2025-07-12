@@ -3,7 +3,7 @@ package org.taking.repository;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import java.util.List;
 import java.util.Optional;
-import javax.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.ApplicationScoped;
 import org.apache.commons.text.WordUtils;
 import org.taking.model.Disciplina;
 

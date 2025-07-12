@@ -2,8 +2,8 @@ package org.taking.model;
 
 import java.io.Serializable;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -21,12 +21,12 @@ import lombok.ToString;
 @ToString
 public class CursoSemestreDisciplinaKey implements Serializable {
 
-    @Column(name = "curso_id")
+    @Column(name = "cursoId")
     private Long cursoId;
 
-    @Column(name = "semestre_id")
+    @Column(name = "semestreId")
     private Long semestreId;
 
-    @Column(name = "disciplina_id")
+    @Column(name = "disciplinaId")
     private Long disciplinaId;
 }

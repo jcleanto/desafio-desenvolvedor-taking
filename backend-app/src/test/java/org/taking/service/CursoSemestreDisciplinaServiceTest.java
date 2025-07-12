@@ -1,7 +1,7 @@
 package org.taking.service;
 
+import io.quarkus.test.InjectMock;
 import io.quarkus.test.junit.QuarkusTest;
-import io.quarkus.test.junit.mockito.InjectMock;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -11,7 +11,7 @@ import org.taking.model.Disciplina;
 import org.taking.model.Semestre;
 import org.taking.repository.CursoSemestreDisciplinaRepository;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 

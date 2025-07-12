@@ -1,11 +1,12 @@
 package org.taking.model;
 
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.MapsId;
-import javax.persistence.Table;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.EmbeddedId;
+import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.MapsId;
+import jakarta.persistence.Table;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,18 +24,18 @@ public class CursoSemestreDisciplina {
   @EmbeddedId
   private CursoSemestreDisciplinaKey cursoSemestreDisciplinaKey;
 
-  @ManyToOne
-  @MapsId("Id")
-  @JoinColumn(name = "curso_id", insertable=false, updatable=false)
+  @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+  @MapsId("cursoId")
+  @JoinColumn(name = "curso_id")
   private Curso curso;
 
-  @ManyToOne
-  @MapsId("Id")
-  @JoinColumn(name = "semestre_id", insertable=false, updatable=false)
+  @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+  @MapsId("semestreId")
+  @JoinColumn(name = "semestre_id")
   private Semestre semestre;
 
-  @ManyToOne
-  @MapsId("Id")
-  @JoinColumn(name = "disciplina_id", insertable=false, updatable=false)
+  @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+  @MapsId("disciplinaId")
+  @JoinColumn(name = "disciplina_id")
   private Disciplina disciplina;
 }

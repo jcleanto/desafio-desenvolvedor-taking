@@ -28,6 +28,7 @@ import { DisciplinaService } from '../disciplina/disciplina.service';
 import { Curso } from '../curso/curso';
 import { Semestre } from '../semestre/semestre';
 import { Disciplina } from '../disciplina/disciplina';
+import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 
 export interface IGradecurricularDialog {
   cursos: Curso[];
@@ -59,13 +60,24 @@ export class GradecurricularComponent implements OnInit {
     private cursoSemestreDisciplinaService: CursoSemestreDisciplinaService,
     private cursoService: CursoService,
     private semestreService: SemestreService,
-    private disciplinaService: DisciplinaService) { }
+    private disciplinaService: DisciplinaService,
+    public confirmDialog: MatDialog) { }
 
   ngOnInit(): void {
     this.list();
     this.listCursos();
     this.listSemestres();
     this.listDisciplinas();
+  }
+
+  openConfirmDialog(cursoSemestreDisciplina: CursoSemestreDisciplina): void {
+    const confirmDialogRef = this.confirmDialog.open(ConfirmDialogComponent, {
+      data: { title: `a Grade Curricular de ${cursoSemestreDisciplina.curso.name} - ${cursoSemestreDisciplina.semestre.name} - ${cursoSemestreDisciplina.disciplina.name}`, delete: () => this.delete(cursoSemestreDisciplina) }
+    });
+
+    confirmDialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed', result);
+    });
   }
 
   openGradecurricularDialog(): void {

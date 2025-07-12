@@ -24,6 +24,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
+import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 
 export interface ISemestreDialog {
   editingSemestre: Semestre;
@@ -53,10 +54,20 @@ export class SemestreComponent implements OnInit {
   editingSemestre!: Semestre;
   readonly dialog = inject(MatDialog);
 
-  constructor(private semestreService: SemestreService) { }
+  constructor(private semestreService: SemestreService, public confirmDialog: MatDialog) { }
 
   ngOnInit(): void {
     this.list();
+  }
+
+  openConfirmDialog(semestre: Semestre): void {
+    const confirmDialogRef = this.confirmDialog.open(ConfirmDialogComponent, {
+      data: { title: `o Semestre ${semestre.name}`, delete: () => this.delete(semestre) }
+    });
+
+    confirmDialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed', result);
+    });
   }
 
   openSemestreDialog(semestre?: Semestre): void {

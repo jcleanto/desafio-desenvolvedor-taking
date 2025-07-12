@@ -31,7 +31,7 @@
   <ng-container matColumnDef="action">
     <th mat-header-cell *matHeaderCellDef></th>
     <td mat-cell *matCellDef="let cursoSemestreDisciplina">
-      <button mat-icon-button (click)="delete(cursoSemestreDisciplina)" color="primary">
+      <button mat-icon-button (click)="openConfirmDialog(cursoSemestreDisciplina)" color="primary">
         <mat-icon>delete</mat-icon>
       </button>
     </td>

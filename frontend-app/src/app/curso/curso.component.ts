@@ -1,5 +1,5 @@
 import { TitleCasePipe } from '@angular/common';
-import { Component, OnInit, inject, model } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import {
   MAT_DIALOG_DATA,
   MatDialog,
@@ -17,6 +17,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
+import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 
 export interface ICursoDialog {
   editingCurso: Curso;
@@ -46,11 +47,21 @@ export class CursoComponent implements OnInit {
   isEditingCurso: boolean = false;
   editingCurso!: Curso;
   readonly dialog = inject(MatDialog);
-
-  constructor(private cursoService: CursoService) { }
+  
+  constructor(private cursoService: CursoService, public confirmDialog: MatDialog) { }
 
   ngOnInit(): void {
     this.list();
+  }
+
+  openConfirmDialog(curso: Curso): void {
+    const confirmDialogRef = this.confirmDialog.open(ConfirmDialogComponent, {
+      data: { title: `o Curso de ${curso.name}`, delete: () => this.delete(curso) }
+    });
+
+    confirmDialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed', result);
+    });
   }
 
   openCursoDialog(curso?: Curso): void {

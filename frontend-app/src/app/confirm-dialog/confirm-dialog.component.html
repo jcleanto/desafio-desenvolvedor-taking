@@ -1,0 +1,8 @@
+<h2 mat-dialog-title>Deletar</h2>
+<mat-dialog-content>
+  Tem certeza que quer deletar <span class="boldTitle">{{data.title}}</span>?
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-raised-button (click)="onNoClick()">Cancelar</button>
+  <button mat-flat-button (click)="onConfirm()" cdkFocusInitial>Ok</button>
+</mat-dialog-actions>

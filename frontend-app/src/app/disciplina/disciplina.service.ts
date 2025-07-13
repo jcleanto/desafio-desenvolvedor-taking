@@ -1,8 +1,9 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, Observable, throwError } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { Disciplina } from './disciplina';
+import { handleError } from '../utils/handle.error';
 
 @Injectable({
   providedIn: 'root'
@@ -18,33 +19,26 @@ export class DisciplinaService {
 
   create(disciplina: Disciplina): Observable<Disciplina> {
     const url = `${environment.apiUrl}/disciplina`;
-    return this.http.post<Disciplina>(url, disciplina);
+    return this.http.post<Disciplina>(url, disciplina)
+      .pipe(
+        catchError(error => handleError(error, 'Erro ao tentar criar uma nova Disciplina. Tente novamente mais tarde.'))
+      );
   }
 
   update(disciplina: Disciplina): Observable<Disciplina> {
     const url = `${environment.apiUrl}/disciplina/${disciplina.id}`;
-    return this.http.put<Disciplina>(url, disciplina);
+    return this.http.put<Disciplina>(url, disciplina)
+      .pipe(
+        catchError(error => handleError(error, 'Erro ao tentar atualizar a Disciplina. Tente novamente mais tarde.'))
+      );
   }
 
   delete(disciplina: Disciplina): Observable<any> {
     const url = `${environment.apiUrl}/disciplina/${disciplina.id}`;
     return this.http.delete<any>(url)
       .pipe(
-        catchError(this.handleError)
+        catchError(error => handleError(error, 'Delete primeiro as referências a essa Disciplina na Grade Curricular.'))
       );
-  }
-
-  private handleError(error: HttpErrorResponse) {
-    if (error.status === 0) {
-      // A client-side or network error occurred. Handle it accordingly.
-      console.error('An error occurred:', error.error);
-    } else {
-      // The backend returned an unsuccessful response code.
-      // The response body may contain clues as to what went wrong.
-      console.error(`Backend returned code ${error.status}, body was: `, error.error);
-    }
-    // Return an observable with a user-facing error message.
-    return throwError(() => new Error('Something bad happened; please try again later.'));
   }
 
 }

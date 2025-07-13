@@ -25,6 +25,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 export interface ISemestreDialog {
   editingSemestre: Semestre;
@@ -47,11 +48,13 @@ export interface ISemestreDialog {
   providers: [TitleCasePipe]
 })
 export class SemestreComponent implements OnInit {
+  private _snackBar = inject(MatSnackBar);
 
   semestres: Semestre[] = [];
   displayedColumns: string[] = ['id', 'name', 'action'];
   isEditingSemestre: boolean = false;
   editingSemestre!: Semestre;
+  errorMessage: string | null = null;
   readonly dialog = inject(MatDialog);
 
   constructor(private semestreService: SemestreService, public confirmDialog: MatDialog) { }
@@ -92,7 +95,19 @@ export class SemestreComponent implements OnInit {
   }
 
   delete(semestre: Semestre): void {
-    this.semestreService.delete(semestre).subscribe(semestre => this.list());
+    this.semestreService.delete(semestre).subscribe({
+      next: (semestre) => {
+        this.list();
+        this.errorMessage = null;
+      },
+      error: (error) => {
+        this.errorMessage = error.message;
+        this._snackBar.open(this.errorMessage || '', 'Fechar', {
+          horizontalPosition: 'end',
+          verticalPosition: 'top',
+        });
+      }
+    });
   }
 }
 
@@ -112,10 +127,12 @@ export class SemestreComponent implements OnInit {
   providers: [TitleCasePipe]
 })
 export class SemestreDialog {
+  private _snackBar = inject(MatSnackBar);
   readonly dialogRef = inject(MatDialogRef<SemestreDialog>);
   readonly data = inject<ISemestreDialog>(MAT_DIALOG_DATA);
 
   semestreForm!: FormGroup;
+  errorMessage: string | null = null;
 
   constructor(
     private semestreService: SemestreService,
@@ -147,7 +164,19 @@ export class SemestreDialog {
   create(formDirective: FormGroupDirective): void {
     const semestre: Semestre = this.semestreForm.getRawValue() as Semestre;
     semestre.name = this.titlecasePipe.transform(semestre.name);
-    this.semestreService.create(semestre).subscribe(semestre => this.data.list());
+    this.semestreService.create(semestre).subscribe({
+      next: (semestre) => {
+        this.data.list();
+        this.errorMessage = null;
+      },
+      error: (error) => {
+        this.errorMessage = error.message;
+        this._snackBar.open(this.errorMessage || '', 'Fechar', {
+          horizontalPosition: 'end',
+          verticalPosition: 'top',
+        });
+      }
+    });
     formDirective.resetForm();
     this.semestreForm.reset();
     this.dialogRef.close();
@@ -155,7 +184,19 @@ export class SemestreDialog {
 
   update(): void {
     this.data.editingSemestre.name = this.titlecasePipe.transform(this.semestreForm.get('name')?.value);
-    this.semestreService.update(this.data.editingSemestre).subscribe(semestre => this.data.list());
+    this.semestreService.update(this.data.editingSemestre).subscribe({
+      next: (semestre) => {
+        this.data.list();
+        this.errorMessage = null;
+      },
+      error: (error) => {
+        this.errorMessage = error.message;
+        this._snackBar.open(this.errorMessage || '', 'Fechar', {
+          horizontalPosition: 'end',
+          verticalPosition: 'top',
+        });
+      }
+    });
     this.data.isEditingSemestre = false;
     this.semestreForm.reset();
     this.dialogRef.close();

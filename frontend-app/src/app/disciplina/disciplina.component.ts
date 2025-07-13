@@ -98,19 +98,16 @@ export class DisciplinaComponent implements OnInit {
     this.disciplinaService.delete(disciplina).subscribe({
       next: (disciplina) => {
         this.list();
-        this.errorMessage = null; // Clear any previous error
+        this.errorMessage = null;
       },
       error: (error) => {
-        this.errorMessage = error.message; // Display the error message to the user
-        // You can also perform other actions based on the error
-        this._snackBar.open(`Delete primeiro as referências a essa Disciplina na Grade Curricular ${error.status}`, 'Fechar', {
+        this.errorMessage = error.message;
+        this._snackBar.open(this.errorMessage || '', 'Fechar', {
           horizontalPosition: 'end',
           verticalPosition: 'top',
         });
       }
     });
-
-    // this.disciplinaService.delete(disciplina).subscribe(disciplina => this.list());
   }
 
 }
@@ -131,10 +128,12 @@ export class DisciplinaComponent implements OnInit {
   providers: [TitleCasePipe]
 })
 export class DisciplinaDialog {
+  private _snackBar = inject(MatSnackBar);
   readonly dialogRef = inject(MatDialogRef<DisciplinaDialog>);
   readonly data = inject<IDisciplinaDialog>(MAT_DIALOG_DATA);
 
   disciplinaForm!: FormGroup;
+  errorMessage: string | null = null;
 
   constructor(
     private disciplinaService: DisciplinaService,
@@ -166,7 +165,19 @@ export class DisciplinaDialog {
   create(formDirective: FormGroupDirective): void {
     const disciplina: Disciplina = this.disciplinaForm.getRawValue() as Disciplina;
     disciplina.name = this.titlecasePipe.transform(disciplina.name);
-    this.disciplinaService.create(disciplina).subscribe(disciplina => this.data.list());
+    this.disciplinaService.create(disciplina).subscribe({
+      next: (disciplina) => {
+        this.data.list();
+        this.errorMessage = null;
+      },
+      error: (error) => {
+        this.errorMessage = error.message;
+        this._snackBar.open(this.errorMessage || '', 'Fechar', {
+          horizontalPosition: 'end',
+          verticalPosition: 'top',
+        });
+      }
+    });
     formDirective.resetForm();
     this.disciplinaForm.reset();
     this.dialogRef.close();
@@ -174,7 +185,19 @@ export class DisciplinaDialog {
 
   update(): void {
     this.data.editingDisciplina.name = this.titlecasePipe.transform(this.disciplinaForm.get('name')?.value);
-    this.disciplinaService.update(this.data.editingDisciplina).subscribe(disciplina => this.data.list());
+    this.disciplinaService.update(this.data.editingDisciplina).subscribe({
+      next: (disciplina) => {
+        this.data.list();
+        this.errorMessage = null;
+      },
+      error: (error) => {
+        this.errorMessage = error.message;
+        this._snackBar.open(this.errorMessage || '', 'Fechar', {
+          horizontalPosition: 'end',
+          verticalPosition: 'top',
+        });
+      }
+    });
     this.data.isEditingDisciplina = false;
     this.disciplinaForm.reset();
     this.dialogRef.close();

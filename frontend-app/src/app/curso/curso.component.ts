@@ -18,6 +18,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 export interface ICursoDialog {
   editingCurso: Curso;
@@ -40,12 +41,14 @@ export interface ICursoDialog {
   providers: [TitleCasePipe]
 })
 export class CursoComponent implements OnInit {
+  private _snackBar = inject(MatSnackBar);
 
   cursos: Curso[] = [];
   displayedColumns: string[] = ['id', 'name', 'action'];
   isCreatingCurso: boolean = false;
   isEditingCurso: boolean = false;
   editingCurso!: Curso;
+  errorMessage: string | null = null;
   readonly dialog = inject(MatDialog);
   
   constructor(private cursoService: CursoService, public confirmDialog: MatDialog) { }
@@ -86,7 +89,19 @@ export class CursoComponent implements OnInit {
   }
 
   delete(curso: Curso): void {
-    this.cursoService.delete(curso).subscribe(curso => this.list());
+    this.cursoService.delete(curso).subscribe({
+      next: (curso) => {
+        this.list();
+        this.errorMessage = null;
+      },
+      error: (error) => {
+        this.errorMessage = error.message;
+        this._snackBar.open(this.errorMessage || '', 'Fechar', {
+          horizontalPosition: 'end',
+          verticalPosition: 'top',
+        });
+      }
+    });
   }
 
 }
@@ -107,10 +122,12 @@ export class CursoComponent implements OnInit {
   providers: [TitleCasePipe]
 })
 export class CursoDialog {
+  private _snackBar = inject(MatSnackBar);
   readonly dialogRef = inject(MatDialogRef<CursoDialog>);
   readonly data = inject<ICursoDialog>(MAT_DIALOG_DATA);
 
   cursoForm!: FormGroup;
+  errorMessage: string | null = null;
 
   constructor(
     private cursoService: CursoService,
@@ -142,7 +159,19 @@ export class CursoDialog {
   create(formDirective: FormGroupDirective): void {
     const curso: Curso = this.cursoForm.getRawValue() as Curso;
     curso.name = this.titlecasePipe.transform(curso.name);
-    this.cursoService.create(curso).subscribe(curso => this.data.list());
+    this.cursoService.create(curso).subscribe({
+      next: (curso) => {
+        this.data.list();
+        this.errorMessage = null;
+      },
+      error: (error) => {
+        this.errorMessage = error.message;
+        this._snackBar.open(this.errorMessage || '', 'Fechar', {
+          horizontalPosition: 'end',
+          verticalPosition: 'top',
+        });
+      }
+    });
     formDirective.resetForm();
     this.cursoForm.reset();
     this.dialogRef.close();
@@ -150,7 +179,19 @@ export class CursoDialog {
 
   update(): void {
     this.data.editingCurso.name = this.titlecasePipe.transform(this.cursoForm.get('name')?.value);
-    this.cursoService.update(this.data.editingCurso).subscribe(curso => this.data.list());
+    this.cursoService.update(this.data.editingCurso).subscribe({
+      next: (curso) => {
+        this.data.list();
+        this.errorMessage = null;
+      },
+      error: (error) => {
+        this.errorMessage = error.message;
+        this._snackBar.open(this.errorMessage || '', 'Fechar', {
+          horizontalPosition: 'end',
+          verticalPosition: 'top',
+        });
+      }
+    });
     this.data.isEditingCurso = false;
     this.cursoForm.reset();
     this.dialogRef.close();

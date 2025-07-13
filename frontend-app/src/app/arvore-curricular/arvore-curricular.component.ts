@@ -14,9 +14,9 @@ import { MatIconModule } from '@angular/material/icon';
  * Dados da Arvore Curricular com estrutura aninhada.
  * Cada nó(node) tem as propriedades name e uma lista children como opcional.
  */
-interface ArvoreCurricularNode {
+interface IArvoreCurricularNode {
   name: string;
-  children?: ArvoreCurricularNode[];
+  children?: IArvoreCurricularNode[];
 }
 
 @Component({
@@ -38,7 +38,7 @@ export class ArvoreCurricularComponent {
   cursoSemestreDisciplinas: CursoSemestreDisciplina[] = [];
   cursoSemestresDisciplinasWithIds: any[] = [];
   selectedCursoId?: number | null;
-  arvoreCurricularDataSource: ArvoreCurricularNode[] = [];
+  arvoreCurricularDataSource: IArvoreCurricularNode[] = [];
 
   constructor(
     private cursoSemestreDisciplinaService: CursoSemestreDisciplinaService,
@@ -48,9 +48,9 @@ export class ArvoreCurricularComponent {
     this.listCursos();
   }
 
-  childrenAccessor = (node: ArvoreCurricularNode) => node.children ?? [];
+  childrenAccessor = (node: IArvoreCurricularNode) => node.children ?? [];
 
-  hasChild = (_: number, node: ArvoreCurricularNode) => !!node.children && node.children.length > 0;
+  hasChild = (_: number, node: IArvoreCurricularNode) => !!node.children && node.children.length > 0;
 
   listCursos(): void {
     this.cursoService.list().subscribe(cursos => this.cursos = cursos);
@@ -64,7 +64,7 @@ export class ArvoreCurricularComponent {
     if (cursoId) {
       this.cursoSemestreDisciplinaService.listByCurso(cursoId).subscribe(cursoSemestreDisciplinas => {
         this.cursoSemestreDisciplinas = cursoSemestreDisciplinas;
-        console.log('this.cursoSemestreDisciplinas', this.cursoSemestreDisciplinas);
+        // monta primeiro uma estrutura básica de IArvoreCurricularNode
         this.cursoSemestresDisciplinasWithIds = this.cursoSemestreDisciplinas.map((cursoSemestreDisciplina) => {
           return {
               name: cursoSemestreDisciplina.curso.name,
@@ -80,29 +80,21 @@ export class ArvoreCurricularComponent {
               ],
             };
         });
-        this.arvoreCurricularDataSource = this.cursoSemestresDisciplinasWithIds.map(({children, ...r}: any) => (
-          {
-            ...r,
-            children: children.map(({children, ...keep}: any) => (
-              {
-                ...keep,
-                children
-              }
-            ))
-          }
-        ));
-        console.log('this.arvoreCurricularDataSource', this.arvoreCurricularDataSource);
-        /*
-        // fazendo o agrupamento por curso
-        this.cursoSemestresDisciplinasWithIds = this.cursoSemestresDisciplinasWithIds.reduce(function(acc, item) {
-          var category = item.name;
-          if (!acc[category]) {
-            acc[category] = [];
-          }
-          acc[category].push(item.children);
-          return acc;
-        }, []);
-        */
+        // monta a estrutura final de IArvoreCurricularNode agrupando por name de cada nó(curso, semestre e disciplina) na árvore curricular
+        this.arvoreCurricularDataSource = [...new Set(this.cursoSemestresDisciplinasWithIds.map(e => e.name))]
+          .map(cursoName => {
+            const semestres = [...new Set(this.cursoSemestresDisciplinasWithIds
+                  .filter(p => p.name === cursoName)
+                  .map(s => (s.children)).flat(1))];
+            return { 
+              name: cursoName, 
+              children: [...new Set(semestres.map(s => s.name))]
+                    .map(semestreName => ({
+                      name: semestreName,
+                      children: semestres.filter(s => s.name === semestreName).map(d => (d.children)).flat(1)
+                    })),
+            };
+          });
 
       });
     } else {

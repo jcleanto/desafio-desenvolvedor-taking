@@ -10,7 +10,9 @@ export function handleError(error: HttpErrorResponse, specificMessage: string) {
     // The backend returned an unsuccessful response code.
     // The response body may contain clues as to what went wrong.
     console.error(`Backend returned code ${error.status}, body was: `, error.error);
-    if (error.error.details.indexOf('org.jboss.resteasy.spi.UnhandledException') !== -1) {
+    if (error.error && error.error.details?.indexOf('org.jboss.resteasy.spi.UnhandledException') !== -1) {
+      message = specificMessage;
+    } else if (error.status === 400) {
       message = specificMessage;
     }
   }

@@ -21,7 +21,7 @@ export class DisciplinaService {
     const url = `${environment.apiUrl}/disciplina`;
     return this.http.post<Disciplina>(url, disciplina)
       .pipe(
-        catchError(error => handleError(error, 'Erro ao tentar criar uma nova Disciplina. Tente novamente mais tarde.'))
+        catchError(error => handleError(error, 'Erro ao tentar criar uma nova Disciplina. Por favor, tente novamente mais tarde.'))
       );
   }
 
@@ -29,7 +29,7 @@ export class DisciplinaService {
     const url = `${environment.apiUrl}/disciplina/${disciplina.id}`;
     return this.http.put<Disciplina>(url, disciplina)
       .pipe(
-        catchError(error => handleError(error, 'Erro ao tentar atualizar a Disciplina. Tente novamente mais tarde.'))
+        catchError(error => handleError(error, 'Erro ao tentar atualizar a Disciplina. Por favor, tente novamente mais tarde.'))
       );
   }
 

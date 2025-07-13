@@ -21,7 +21,7 @@ export class SemestreService {
     const url = `${environment.apiUrl}/semestre`;
     return this.http.post<Semestre>(url, semestre)
       .pipe(
-        catchError(error => handleError(error, 'Erro ao tentar criar um novo Semestre. Tente novamente mais tarde.'))
+        catchError(error => handleError(error, 'Erro ao tentar criar um novo Semestre. Por favor, tente novamente mais tarde.'))
       );
   }
 
@@ -29,7 +29,7 @@ export class SemestreService {
     const url = `${environment.apiUrl}/semestre/${semestre.id}`;
     return this.http.put<Semestre>(url, semestre)
       .pipe(
-        catchError(error => handleError(error, 'Erro ao tentar atualizar o Semestre. Tente novamente mais tarde.'))
+        catchError(error => handleError(error, 'Erro ao tentar atualizar o Semestre. Por favor, tente novamente mais tarde.'))
       );
   }
 

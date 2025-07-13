@@ -29,6 +29,7 @@ import { Curso } from '../curso/curso';
 import { Semestre } from '../semestre/semestre';
 import { Disciplina } from '../disciplina/disciplina';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 export interface IGradecurricularDialog {
   cursos: Curso[];
@@ -52,6 +53,7 @@ export interface IGradecurricularDialog {
   styleUrl: './gradecurricular.component.css'
 })
 export class GradecurricularComponent implements OnInit {
+  private _snackBar = inject(MatSnackBar);
 
   cursoSemestreDisciplinas: CursoSemestreDisciplina[] = [];
   cursos: Curso[] = [];
@@ -59,6 +61,7 @@ export class GradecurricularComponent implements OnInit {
   semestres: Semestre[] = [];
   disciplinas: Disciplina[] = [];
   displayedColumns: string[] = ['curso_name', 'semestre_name', 'disciplina_name', 'action'];
+  errorMessage: string | null = null;
   readonly dialog = inject(MatDialog);
 
   constructor(
@@ -125,8 +128,20 @@ export class GradecurricularComponent implements OnInit {
     this.disciplinaService.list().subscribe(disciplinas => this.disciplinas = disciplinas);
   }
 
-  delete(disciplina: CursoSemestreDisciplina): void {
-    this.cursoSemestreDisciplinaService.delete(disciplina).subscribe(disciplina => this.list());
+  delete(cursoSemestreDisciplina: CursoSemestreDisciplina): void {
+    this.cursoSemestreDisciplinaService.delete(cursoSemestreDisciplina).subscribe({
+      next: (cursoSemestreDisciplina) => {
+        this.list();
+        this.errorMessage = null;
+      },
+      error: (error) => {
+        this.errorMessage = error.message;
+        this._snackBar.open(this.errorMessage || '', 'Fechar', {
+          horizontalPosition: 'end',
+          verticalPosition: 'top',
+        });
+      }
+    });
   }
 
 }
@@ -146,10 +161,12 @@ export class GradecurricularComponent implements OnInit {
   ]
 })
 export class GradecurricularDialog {
+  private _snackBar = inject(MatSnackBar);
   readonly dialogRef = inject(MatDialogRef<GradecurricularDialog>);
   readonly data = inject<IGradecurricularDialog>(MAT_DIALOG_DATA);
 
   gradeCurricularForm!: FormGroup;
+  errorMessage: string | null = null;
 
   constructor(
     private cursoSemestreDisciplinaService: CursoSemestreDisciplinaService,
@@ -165,7 +182,20 @@ export class GradecurricularDialog {
 
   create(formDirective: FormGroupDirective): void {
     const cursoSemestreDisciplina: CursoSemestreDisciplina = this.gradeCurricularForm.getRawValue() as CursoSemestreDisciplina;
-    this.cursoSemestreDisciplinaService.create(cursoSemestreDisciplina).subscribe(cursoSemestreDisciplina => this.data.list(this.data.selectedCursoId));
+    this.cursoSemestreDisciplinaService.create(cursoSemestreDisciplina).subscribe({
+      next: (cursoSemestreDisciplina) => {
+        this.data.list(this.data.selectedCursoId);
+        this.errorMessage = null;
+      },
+      error: (error) => {
+        this.errorMessage = error.message;
+        this._snackBar.open(this.errorMessage || '', 'Fechar', {
+          horizontalPosition: 'end',
+          verticalPosition: 'top',
+        });
+      }
+    });
+
     formDirective.resetForm();
     this.gradeCurricularForm.reset();
     this.dialogRef.close();

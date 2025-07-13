@@ -1,8 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { catchError, Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { CursoSemestreDisciplina } from './gradecurricular';
+import { handleError } from '../utils/handle.error';
 
 @Injectable({
   providedIn: 'root'
@@ -23,12 +24,18 @@ export class CursoSemestreDisciplinaService {
 
   create(cursoSemestreDisciplina: CursoSemestreDisciplina): Observable<CursoSemestreDisciplina> {
     const url = `${environment.apiUrl}/cursosemestredisciplina`;
-    return this.http.post<CursoSemestreDisciplina>(url, cursoSemestreDisciplina);
+    return this.http.post<CursoSemestreDisciplina>(url, cursoSemestreDisciplina)
+      .pipe(
+        catchError(error => handleError(error, 'Erro ao tentar criar uma nova Grade Curricular. Verifique se a mesma já existe.'))
+      );
   }
 
   delete(cursoSemestreDisciplina: CursoSemestreDisciplina): Observable<CursoSemestreDisciplina> {
     const url = `${environment.apiUrl}/cursosemestredisciplina/delete`;
-    return this.http.post<CursoSemestreDisciplina>(url, cursoSemestreDisciplina);
+    return this.http.post<CursoSemestreDisciplina>(url, cursoSemestreDisciplina)
+      .pipe(
+        catchError(error => handleError(error, 'Erro ao tentar deletar a Grade Curricular. Por favor, tente novamente mais tarde.'))
+      );
   }
 
 }

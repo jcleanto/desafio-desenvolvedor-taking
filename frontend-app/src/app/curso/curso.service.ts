@@ -21,7 +21,7 @@ export class CursoService {
     const url = `${environment.apiUrl}/curso`;
     return this.http.post<Curso>(url, curso)
       .pipe(
-        catchError(error => handleError(error, 'Erro ao tentar criar um novo Curso. Tente novamente mais tarde.'))
+        catchError(error => handleError(error, 'Erro ao tentar criar um novo Curso. Por favor, tente novamente mais tarde.'))
       );
   }
 
@@ -29,7 +29,7 @@ export class CursoService {
     const url = `${environment.apiUrl}/curso/${curso.id}`;
     return this.http.put<Curso>(url, curso)
       .pipe(
-        catchError(error => handleError(error, 'Erro ao tentar atualizar o Curso. Tente novamente mais tarde.'))
+        catchError(error => handleError(error, 'Erro ao tentar atualizar o Curso. Por favor, tente novamente mais tarde.'))
       );;
   }
 

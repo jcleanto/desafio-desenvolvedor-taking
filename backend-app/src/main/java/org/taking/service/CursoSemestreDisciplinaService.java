@@ -36,6 +36,10 @@ public class CursoSemestreDisciplinaService {
     return cursoSemestreDisciplinaRepository.listAll();
   }
 
+  public List<CursoSemestreDisciplina> findCursoSemestreDisciplinasByCurso(long cursoId) {
+    return cursoSemestreDisciplinaRepository.findCursoSemestreDisciplinasByCurso(cursoId);
+  }
+
   @Transactional
   public void create(CursoSemestreDisciplinaDTO cursoSemestreDisciplinaDTO) throws InvalidAttributesException {
     Validate.notNull(cursoSemestreDisciplinaDTO, "CursoSemestreDisciplinaDTO não pode ser nulo");
@@ -58,22 +62,13 @@ public class CursoSemestreDisciplinaService {
   @Transactional
   public void delete(CursoSemestreDisciplinaDTO cursoSemestreDisciplinaDTO) {
     // realiza uma busca pela chave primária composta
-    PanacheQuery<CursoSemestreDisciplina> query = cursoSemestreDisciplinaRepository.find("curso_id = :cursoId and semestre_id = :semestreId and disciplina_id = :disciplinaId", Parameters.with("cursoId", cursoSemestreDisciplinaDTO.getCurso().getId()).and("semestreId", cursoSemestreDisciplinaDTO.getSemestre().getId()).and("disciplinaId", cursoSemestreDisciplinaDTO.getDisciplina().getId()));
+    PanacheQuery<CursoSemestreDisciplina> query = cursoSemestreDisciplinaRepository.find("from CursoSemestreDisciplina csd left join fetch csd.curso c left join fetch csd.semestre s left join fetch csd.disciplina d where c.id = :cursoId and s.id = :semestreId and d.id = :disciplinaId", Parameters.with("cursoId", cursoSemestreDisciplinaDTO.getCurso().getId()).and("semestreId", cursoSemestreDisciplinaDTO.getSemestre().getId()).and("disciplinaId", cursoSemestreDisciplinaDTO.getDisciplina().getId()));
     Optional<CursoSemestreDisciplina> cursoSemestreDisciplinaOptional = query.singleResultOptional();
     Validate.notNull(cursoSemestreDisciplinaOptional, "CursoSemestreDisciplina não pode ser nulo");
 
-
     if (cursoSemestreDisciplinaOptional.isPresent()) {
-      CursoSemestreDisciplina cursoSemestreDisciplina = cursoSemestreDisciplinaOptional.get();
-      cursoSemestreDisciplina.setCurso(null);
-      cursoSemestreDisciplina.setSemestre(null);
-      cursoSemestreDisciplina.setDisciplina(null);
-      CursoSemestreDisciplinaKey cursoSemestreDisciplinaKey = new CursoSemestreDisciplinaKey(cursoSemestreDisciplinaDTO.getCurso().getId(), cursoSemestreDisciplinaDTO.getSemestre().getId(), cursoSemestreDisciplinaDTO.getDisciplina().getId());
-      cursoSemestreDisciplina.setCursoSemestreDisciplinaKey(cursoSemestreDisciplinaKey);
-      cursoSemestreDisciplinaRepository.delete(cursoSemestreDisciplina);
+      cursoSemestreDisciplinaRepository.delete(cursoSemestreDisciplinaOptional.get());
     }
-    
-    // cursoSemestreDisciplinaRepository.delete("curso_id = :cursoId and semestre_id = :semestreId and disciplina_id = :disciplinaId", Parameters.with("cursoId", cursoSemestreDisciplinaDTO.getCurso().getId()).and("semestreId", cursoSemestreDisciplinaDTO.getSemestre().getId()).and("disciplinaId", cursoSemestreDisciplinaDTO.getDisciplina().getId()));
   }
   
 }

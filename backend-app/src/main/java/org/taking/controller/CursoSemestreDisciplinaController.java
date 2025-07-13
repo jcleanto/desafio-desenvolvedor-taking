@@ -7,6 +7,7 @@ import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -34,6 +35,23 @@ public class CursoSemestreDisciplinaController {
   public Response getCursoSemestreDisciplinas() {
     try {
       return Response.ok(cursoSemestreDisciplinaService.getCursoSemestreDisciplinas()).build();
+    } catch (Exception e) {
+      // retorna como http 400, em caso de erro
+      return Response.status(Status.BAD_REQUEST).build();
+    }
+  }
+
+  /**
+   * Método GET para buscar uma lista de CursoSemestreDisciplina
+   * 
+   * @param cursoId
+   * @return Response
+   */
+  @GET
+  @Path("/{cursoId}")
+  public Response getCursoSemestreDisciplinasByCurso(@PathParam("cursoId") long cursoId) {
+    try {
+      return Response.ok(cursoSemestreDisciplinaService.findCursoSemestreDisciplinasByCurso(cursoId)).build();
     } catch (Exception e) {
       // retorna como http 400, em caso de erro
       return Response.status(Status.BAD_REQUEST).build();

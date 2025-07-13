@@ -8,6 +8,7 @@ import {
   MatDialogRef,
   MatDialogTitle,
 } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import {
   FormBuilder,
   FormGroup,
@@ -24,6 +25,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
+import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 
 export interface IDisciplinaDialog {
   editingDisciplina: Disciplina;
@@ -46,17 +48,29 @@ export interface IDisciplinaDialog {
   providers: [TitleCasePipe]
 })
 export class DisciplinaComponent implements OnInit {
+  private _snackBar = inject(MatSnackBar);
 
   disciplinas: Disciplina[] = [];
   displayedColumns: string[] = ['id', 'name', 'action'];
   isEditingDisciplina: boolean = false;
   editingDisciplina!: Disciplina;
+  errorMessage: string | null = null;
   readonly dialog = inject(MatDialog);
 
-  constructor(private disciplinaService: DisciplinaService) { }
+  constructor(private disciplinaService: DisciplinaService, public confirmDialog: MatDialog) { }
 
   ngOnInit(): void {
     this.list();
+  }
+
+  openConfirmDialog(disciplina: Disciplina): void {
+    const confirmDialogRef = this.confirmDialog.open(ConfirmDialogComponent, {
+      data: { title: `a Disciplina ${disciplina.name}`, delete: () => this.delete(disciplina) }
+    });
+
+    confirmDialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed', result);
+    });
   }
 
   openDisciplinaDialog(disciplina?: Disciplina): void {
@@ -81,7 +95,22 @@ export class DisciplinaComponent implements OnInit {
   }
 
   delete(disciplina: Disciplina): void {
-    this.disciplinaService.delete(disciplina).subscribe(disciplina => this.list());
+    this.disciplinaService.delete(disciplina).subscribe({
+      next: (disciplina) => {
+        this.list();
+        this.errorMessage = null; // Clear any previous error
+      },
+      error: (error) => {
+        this.errorMessage = error.message; // Display the error message to the user
+        // You can also perform other actions based on the error
+        this._snackBar.open(`Delete primeiro as referências a essa Disciplina na Grade Curricular ${error.status}`, 'Fechar', {
+          horizontalPosition: 'end',
+          verticalPosition: 'top',
+        });
+      }
+    });
+
+    // this.disciplinaService.delete(disciplina).subscribe(disciplina => this.list());
   }
 
 }

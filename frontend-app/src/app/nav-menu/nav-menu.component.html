@@ -9,6 +9,7 @@
       <a mat-list-item [routerLink]="['/semestre']">Semestres</a>
       <a mat-list-item [routerLink]="['/disciplina']">Disciplinas</a>
       <a mat-list-item [routerLink]="['/gradecurricular']">Grades Curriculares</a>
+      <a mat-list-item [routerLink]="['/arvorecurricular']">Árvores Curriculares</a>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
@@ -22,7 +23,12 @@
           <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
         </button>
       }
-      <span>Desafio Desenvolvedor Taking</span>
+      <div class="containerTop">
+        <span>Desafio Desenvolvedor Taking</span>
+        <button mat-flat-button color="primary" type="button">
+          Logout
+        </button>
+      </div>
     </mat-toolbar>
     <!-- Add Content Here -->
     <div class="container">

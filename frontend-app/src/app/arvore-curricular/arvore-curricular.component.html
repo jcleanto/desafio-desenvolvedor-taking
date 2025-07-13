@@ -1,0 +1,28 @@
+<mat-form-field appearance="outline" style="margin-right: 10px;">
+  <mat-label>Escolha o Curso</mat-label>
+  <mat-select [(ngModel)]="selectedCursoId" (ngModelChange)="onChangeCurso()" name="curso">
+    @for (curso of cursos; track curso) {
+      <mat-option [value]="curso.id">{{curso.name}}</mat-option>
+    }
+  </mat-select>
+</mat-form-field>
+<mat-tree #tree [dataSource]="arvoreCurricularDataSource" [childrenAccessor]="childrenAccessor" style="background-color: #edeeee;">
+  <!-- This is the tree node template for leaf nodes -->
+  <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding [isExpanded]="true">
+    <!-- use a disabled button to provide padding for tree leaf -->
+    <button mat-icon-button disabled></button>
+    {{node.name}}
+  </mat-tree-node>
+  <!-- This is the tree node template for expandable nodes -->
+  <mat-tree-node *matTreeNodeDef="let node;when: hasChild" matTreeNodePadding matTreeNodeToggle
+                [cdkTreeNodeTypeaheadLabel]="node.name"
+                [isExpanded]="true">
+    <button mat-button matIconButton matTreeNodeToggle
+            [attr.aria-label]="'Toggle ' + node.name">
+      <mat-icon class="mat-icon-rtl-mirror">
+        {{tree.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+      </mat-icon>
+    </button>
+    {{node.name}}
+  </mat-tree-node>
+</mat-tree>

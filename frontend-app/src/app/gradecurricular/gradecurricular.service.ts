@@ -16,6 +16,11 @@ export class CursoSemestreDisciplinaService {
     return this.http.get<CursoSemestreDisciplina[]>(url);
   }
 
+  listByCurso(cursoId: number): Observable<CursoSemestreDisciplina[]> {
+    const url = `${environment.apiUrl}/cursosemestredisciplina/${cursoId}`;
+    return this.http.get<CursoSemestreDisciplina[]>(url);
+  }
+
   create(cursoSemestreDisciplina: CursoSemestreDisciplina): Observable<CursoSemestreDisciplina> {
     const url = `${environment.apiUrl}/cursosemestredisciplina`;
     return this.http.post<CursoSemestreDisciplina>(url, cursoSemestreDisciplina);

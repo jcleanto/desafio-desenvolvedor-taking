@@ -1,3 +1,21 @@
 table {
     width: 100%;
 }
+
+.searchBar {
+    display: flex;
+    align-items: center;
+}
+
+.divider {
+    margin: 0;
+    padding: 0 20px 0 10px;
+    height: 30px;
+}
+
+.center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}

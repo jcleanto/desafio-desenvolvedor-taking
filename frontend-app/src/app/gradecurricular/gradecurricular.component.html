@@ -1,6 +1,16 @@
-<button mat-raised-button color="primary" (click)="openGradecurricularDialog()" style="margin-bottom: 20px;">
-  Adicionar Disciplina
-</button>
+<div class="searchBar">
+  <button mat-raised-button color="primary" (click)="openGradecurricularDialog()" style="margin-right: 20px; margin-bottom: 20px;">
+    Adicionar Disciplina
+  </button>
+  <mat-form-field appearance="outline" style="margin-right: 10px;">
+    <mat-label>Escolha o Curso</mat-label>
+    <mat-select [(ngModel)]="selectedCursoId" (ngModelChange)="onChangeCurso()" name="curso">
+      @for (curso of cursos; track curso) {
+        <mat-option [value]="curso.id">{{curso.name}}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+</div>
 <table mat-table [dataSource]="cursoSemestreDisciplinas" class="mat-elevation-z8">
 
   <!-- Curso Name Column -->
@@ -39,4 +49,9 @@
 
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
   <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  <tr class="mat-row" *matNoDataRow>
+    <td class="mat-cell" [attr.colspan]="displayedColumns.length">
+      <h5 class="center">Não há Disciplinas cadastradas para esse curso.<br/>Clique no botão Adicionar Disciplina acima.</h5>
+    </td>
+  </tr>
 </table>

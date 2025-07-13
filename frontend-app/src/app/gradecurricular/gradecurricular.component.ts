@@ -40,6 +40,9 @@ export interface IGradecurricularDialog {
 @Component({
   selector: 'app-gradecurricular',
   imports: [
+    MatFormFieldModule,
+    MatSelectModule,
+    FormsModule,
     MatTableModule,
     MatIconModule,
     MatButtonModule
@@ -51,6 +54,7 @@ export class GradecurricularComponent implements OnInit {
 
   cursoSemestreDisciplinas: CursoSemestreDisciplina[] = [];
   cursos: Curso[] = [];
+  selectedCursoId?: number | null;
   semestres: Semestre[] = [];
   disciplinas: Disciplina[] = [];
   displayedColumns: string[] = ['curso_name', 'semestre_name', 'disciplina_name', 'action'];
@@ -86,7 +90,7 @@ export class GradecurricularComponent implements OnInit {
         cursos: this.cursos,
         semestres: this.semestres,
         disciplinas: this.disciplinas,
-        list: () => this.list()
+        list: () => this.list(null)
       },
     });
 
@@ -95,8 +99,16 @@ export class GradecurricularComponent implements OnInit {
     });
   }
 
-  list(): void {
-    this.cursoSemestreDisciplinaService.list().subscribe(cursoSemestreDisciplinas => this.cursoSemestreDisciplinas = cursoSemestreDisciplinas);
+  onChangeCurso(): void {
+    this.list(this.selectedCursoId);
+  }
+
+  list(cursoId?: number | null): void {
+    if (cursoId) {
+      this.cursoSemestreDisciplinaService.listByCurso(cursoId).subscribe(cursoSemestreDisciplinas => this.cursoSemestreDisciplinas = cursoSemestreDisciplinas);
+    } else {
+      this.cursoSemestreDisciplinaService.list().subscribe(cursoSemestreDisciplinas => this.cursoSemestreDisciplinas = cursoSemestreDisciplinas);
+    }
   }
 
   listCursos(): void {

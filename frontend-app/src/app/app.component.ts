@@ -1,10 +1,17 @@
 import { Component } from '@angular/core';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
+import { OverlayModule } from '@angular/cdk/overlay';
+import { LoadingInterceptor } from './loading.interceptor';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 @Component({
   selector: 'app-root',
   imports: [
-    NavMenuComponent
+    NavMenuComponent,
+    OverlayModule
+  ],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true },
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'

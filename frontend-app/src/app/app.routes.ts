@@ -4,12 +4,36 @@ import { SemestreComponent } from './semestre/semestre.component';
 import { DisciplinaComponent } from './disciplina/disciplina.component';
 import { GradecurricularComponent } from './gradecurricular/gradecurricular.component';
 import { ArvoreCurricularComponent } from './arvore-curricular/arvore-curricular.component';
+import { SideLoginComponent } from './side-login/side-login.component';
+import { canActivateAuthRole } from './guards/auth-role.guard';
+
 
 export const routes: Routes = [
-  { path: 'curso', component: CursoComponent },
-  { path: 'semestre', component: SemestreComponent },
-  { path: 'disciplina', component: DisciplinaComponent },
-  { path: 'gradecurricular', component: GradecurricularComponent },
+  { path: '', component: SideLoginComponent },
+  {
+    path: 'curso',
+    component: CursoComponent,
+    canActivate: [canActivateAuthRole],
+    data: { role: 'admin' },
+  },
+  {
+    path: 'semestre',
+    component: SemestreComponent,
+    canActivate: [canActivateAuthRole],
+    data: { role: 'admin' },
+  },
+  {
+    path: 'disciplina',
+    component: DisciplinaComponent,
+    canActivate: [canActivateAuthRole],
+    data: { role: 'admin' },
+  },
+  {
+    path: 'gradecurricular',
+    component: GradecurricularComponent,
+    canActivate: [canActivateAuthRole],
+    data: { role: 'admin' },
+  },
   { path: 'arvorecurricular', component: ArvoreCurricularComponent },
   { path: '', redirectTo: '/curso', pathMatch: 'full' },
 ];

@@ -34,7 +34,8 @@ export interface IGradecurricularDialog {
   cursos: Curso[];
   semestres: Semestre[];
   disciplinas: Disciplina[];
-  list: () => {};
+  selectedCursoId: number | null;
+  list: (selectedCursoId: number | null) => {};
 }
 
 @Component({
@@ -90,7 +91,8 @@ export class GradecurricularComponent implements OnInit {
         cursos: this.cursos,
         semestres: this.semestres,
         disciplinas: this.disciplinas,
-        list: () => this.list(null)
+        selectedCursoId: this.selectedCursoId,
+        list: (selectedCursoId: number | null) => this.list(selectedCursoId)
       },
     });
 
@@ -162,9 +164,8 @@ export class GradecurricularDialog {
   }
 
   create(formDirective: FormGroupDirective): void {
-    // console.log('', this.gradeCurricularForm.getRawValue());
     const cursoSemestreDisciplina: CursoSemestreDisciplina = this.gradeCurricularForm.getRawValue() as CursoSemestreDisciplina;
-    this.cursoSemestreDisciplinaService.create(cursoSemestreDisciplina).subscribe(cursoSemestreDisciplina => this.data.list());
+    this.cursoSemestreDisciplinaService.create(cursoSemestreDisciplina).subscribe(cursoSemestreDisciplina => this.data.list(this.data.selectedCursoId));
     formDirective.resetForm();
     this.gradeCurricularForm.reset();
     this.dialogRef.close();

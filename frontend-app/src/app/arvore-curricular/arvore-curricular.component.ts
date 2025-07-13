@@ -64,7 +64,7 @@ export class ArvoreCurricularComponent {
     if (cursoId) {
       this.cursoSemestreDisciplinaService.listByCurso(cursoId).subscribe(cursoSemestreDisciplinas => {
         this.cursoSemestreDisciplinas = cursoSemestreDisciplinas;
-        // monta primeiro uma estrutura básica de IArvoreCurricularNode
+        // monta primeiro uma estrutura básica de IArvoreCurricularNode sem agrupamento
         this.cursoSemestresDisciplinasWithIds = this.cursoSemestreDisciplinas.map((cursoSemestreDisciplina) => {
           return {
               name: cursoSemestreDisciplina.curso.name,
@@ -80,7 +80,7 @@ export class ArvoreCurricularComponent {
               ],
             };
         });
-        // monta a estrutura final de IArvoreCurricularNode agrupando por name de cada nó(curso, semestre e disciplina) na árvore curricular
+        // monta a estrutura final de IArvoreCurricularNode agrupando por name de cada nó(curso, semestre e disciplina) da árvore curricular
         this.arvoreCurricularDataSource = [...new Set(this.cursoSemestresDisciplinasWithIds.map(e => e.name))]
           .map(cursoName => {
             const semestres = [...new Set(this.cursoSemestresDisciplinasWithIds

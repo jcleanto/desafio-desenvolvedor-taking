@@ -1,4 +1,5 @@
 import { Component, effect, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { Router } from '@angular/router';
 import { KEYCLOAK_EVENT_SIGNAL, KeycloakEventType, typeEventArgs, ReadyArgs } from 'keycloak-angular';
@@ -8,6 +9,7 @@ import Keycloak from 'keycloak-js';
 @Component({
   selector: 'app-side-login',
   imports: [
+    CommonModule,
     MatButtonModule
   ],
   templateUrl: './side-login.component.html',

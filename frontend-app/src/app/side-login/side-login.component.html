@@ -1,4 +1,5 @@
-<button mat-flat-button color="primary" (click)="login()">
-  Sign In with SSO
-</button>
-
+<div class="container" *ngIf="!authenticated">
+  <button mat-flat-button color="primary" (click)="login()">
+    Logar usando SSO
+  </button>
+</div>

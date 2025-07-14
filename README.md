@@ -6,7 +6,7 @@ Nessa versão estão contemplados os CRUDs de Cursos, Semestres, Disciplinas e M
 
 No backend foi utilizado o padrão MVC separado por contextos: controller, service, model e repository.
 
-No frontend foi utilizada a biblioteca @angular/material para criar uma interface responsiva e agradável ao usuário (UX).
+No frontend foi utilizada a biblioteca ```@angular/material``` para criar uma interface responsiva e agradável ao usuário (UX).
 
 ## Suposições
 
@@ -45,6 +45,8 @@ $ cd frontend-app/
 $ npm install
 $ ng serve
 ```
+
+Obs.: No painel de administração do Keycloak será necessário fazer a criação de um realm chamado: ```desafio-desenvolvedor-taking```, usando o arquivo de importação na pasta ```./backend-app/config/quarkus-realm.json```, para acessar com os usuários: ```login: administrador senha: 123``` | ```login: aluno senha: 123```, já com seus roles associados (admin e aluno).
 
 Acesse o Quarkus Swagger UI no endereço http://localhost:8080/q/swagger-ui e o Angular front end no endereço http://localhost:4200
 

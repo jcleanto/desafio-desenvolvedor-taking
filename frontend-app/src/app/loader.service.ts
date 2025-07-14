@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
-import { LoaderComponent } from './loader-component/loader.component';
+import { LoaderComponent } from './components/loader-component/loader.component';
 
 @Injectable({
   providedIn: 'root',

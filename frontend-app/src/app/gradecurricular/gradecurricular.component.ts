@@ -28,7 +28,7 @@ import { DisciplinaService } from '../disciplina/disciplina.service';
 import { Curso } from '../curso/curso';
 import { Semestre } from '../semestre/semestre';
 import { Disciplina } from '../disciplina/disciplina';
-import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+import { ConfirmDialogComponent } from '../components/confirm-dialog/confirm-dialog.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 export interface IGradecurricularDialog {

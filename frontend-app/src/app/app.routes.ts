@@ -4,7 +4,7 @@ import { SemestreComponent } from './semestre/semestre.component';
 import { DisciplinaComponent } from './disciplina/disciplina.component';
 import { GradecurricularComponent } from './gradecurricular/gradecurricular.component';
 import { ArvoreCurricularComponent } from './arvore-curricular/arvore-curricular.component';
-import { SideLoginComponent } from './side-login/side-login.component';
+import { SideLoginComponent } from './components/side-login/side-login.component';
 import { canActivateAuthRole } from './guards/auth-role.guard';
 
 

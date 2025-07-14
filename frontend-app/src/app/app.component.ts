@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavMenuComponent } from './nav-menu/nav-menu.component';
+import { NavMenuComponent } from './components/nav-menu/nav-menu.component';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { LoadingInterceptor } from './loading.interceptor';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';

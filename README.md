@@ -12,6 +12,8 @@ No frontend foi utilizada a biblioteca @angular/material para criar uma interfac
 
 Nessa versão existem dois tipos de usuários: administrador (role: admin) e aluno (role: aluno).
 
+Foram criados 2 usuários no Keycloak: login: administrador senha: 123 | login: aluno senha: 123
+
 O administrador possui acesso completo aos Cruds e também acesso a Árvore Curricular (que é a tela de visualização das Grades Curriculares com filtro por Curso).
 
 O aluno possui acesso apenas a Árvore Curricular de qualquer curso.

@@ -9,6 +9,10 @@ export class LoadingInterceptor implements HttpInterceptor {
   constructor(private loaderService: LoaderService) {}
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    request = request.clone({
+      withCredentials: true
+    });
+
     this.loaderService.show();
     return next.handle(request).pipe(
       finalize(() => {

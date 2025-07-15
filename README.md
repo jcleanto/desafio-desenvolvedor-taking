@@ -25,7 +25,7 @@ Para atender requisitos de UX:
   - as ações de deletar possuem um diálogo de confirmação
   - foram tratadas as mensagens de erro nas requisições ao backend, mostrando mensagens amigáveis ao usuário
 
-Obs.: Por causa de um problema de versões incompatíveis da biblioteca ```keycloak-js``` com a versão do ```keyloak server``` e a versão da biblioteca ```@angular/core```, o frontend busca o token no endpoint correto porém não o envia nos requests seguintes. Por isso, o backend não está protegido com a anotação ```@Authenticated```. Ainda estou tentando resolver esse problema.
+Obs.: A API Rest está com segurança agora, e o frontend também está mandando corretamente o token de segurança, publicado 15/07/2025 as 19:08
 
 ## Requisitos
 

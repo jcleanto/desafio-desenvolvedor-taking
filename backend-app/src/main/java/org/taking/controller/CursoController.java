@@ -3,6 +3,8 @@ package org.taking.controller;
 import java.security.InvalidParameterException;
 import java.util.Map;
 import javax.naming.directory.InvalidAttributesException;
+
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.DefaultValue;
@@ -20,6 +22,8 @@ import lombok.AllArgsConstructor;
 import org.taking.model.Curso;
 import org.taking.service.CursoService;
 
+import io.quarkus.security.Authenticated;
+
 @AllArgsConstructor
 @Path("/api/v1/curso")
 @Produces(MediaType.APPLICATION_JSON)
@@ -35,6 +39,7 @@ public class CursoController {
      * @return Response
      */
     @GET
+    @RolesAllowed({"admin", "aluno"})
     public Response getCursos(
             @QueryParam("name") @DefaultValue("") String cursoName
     ) {
@@ -53,6 +58,7 @@ public class CursoController {
      * @return Response
      */
     @GET
+    @RolesAllowed("admin")
     @Path("/{id}")
     public Response getById(@PathParam("id") long id) {
         try {
@@ -76,6 +82,7 @@ public class CursoController {
      * @return Response
      */
     @POST
+    @RolesAllowed("admin")
     public Response create(Curso curso) {
         try {
             cursoService.create(curso);
@@ -99,6 +106,7 @@ public class CursoController {
      * @return Response
      */
     @PUT
+    @RolesAllowed("admin")
     @Path("/{id}")
     public Response replace(@PathParam("id") long cursoId, Curso curso) {
         try {
@@ -121,6 +129,7 @@ public class CursoController {
      * @return Response
      */
     @DELETE
+    @RolesAllowed("admin")
     @Path("/{id}")
     public Response delete(@PathParam("id") long cursoId) {
         var isDeleted = cursoService.delete(cursoId);

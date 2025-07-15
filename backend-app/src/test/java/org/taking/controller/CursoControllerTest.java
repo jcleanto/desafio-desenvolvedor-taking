@@ -2,6 +2,8 @@ package org.taking.controller;
 
 import io.quarkus.test.InjectMock;
 import io.quarkus.test.junit.QuarkusTest;
+import io.quarkus.test.security.TestSecurity;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -32,6 +34,7 @@ public class CursoControllerTest {
   }
 
   @Test
+  @TestSecurity(user = "administrador", roles = {"admin", "aluno"})
   void getCursosOK() {
     List<Curso> cursos = new ArrayList<>();
     cursos.add(curso);
@@ -47,6 +50,7 @@ public class CursoControllerTest {
   }
 
   @Test
+  @TestSecurity(user = "administrador", roles = {"admin"})
   void getByIdOK() {
     Mockito.when(cursoService.findCursoById(1L)).thenReturn(Optional.of(curso));
 
@@ -60,6 +64,7 @@ public class CursoControllerTest {
   }
 
   @Test
+  @TestSecurity(user = "administrador", roles = {"admin"})
   void getByIdKO() {
     Mockito.when(cursoService.findCursoById(1L)).thenReturn(Optional.empty());
 

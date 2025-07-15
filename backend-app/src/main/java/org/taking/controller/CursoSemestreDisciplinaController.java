@@ -3,6 +3,8 @@ package org.taking.controller;
 import java.util.Map;
 
 import javax.naming.directory.InvalidAttributesException;
+
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
@@ -16,6 +18,7 @@ import jakarta.ws.rs.core.Response.Status;
 import org.taking.dto.CursoSemestreDisciplinaDTO;
 import org.taking.service.CursoSemestreDisciplinaService;
 
+import io.quarkus.security.Authenticated;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
@@ -32,6 +35,7 @@ public class CursoSemestreDisciplinaController {
    * @return Response
    */
   @GET
+  @RolesAllowed({"admin", "aluno"})
   public Response getCursoSemestreDisciplinas() {
     try {
       return Response.ok(cursoSemestreDisciplinaService.getCursoSemestreDisciplinas()).build();
@@ -48,6 +52,7 @@ public class CursoSemestreDisciplinaController {
    * @return Response
    */
   @GET
+  @RolesAllowed({"admin", "aluno"})
   @Path("/{cursoId}")
   public Response getCursoSemestreDisciplinasByCurso(@PathParam("cursoId") long cursoId) {
     try {
@@ -65,6 +70,7 @@ public class CursoSemestreDisciplinaController {
    * @return Response
    */
   @POST
+  @RolesAllowed("admin")
   public Response create(CursoSemestreDisciplinaDTO cursoSemestreDisciplinaDTO) {
     try {
       cursoSemestreDisciplinaService.create(cursoSemestreDisciplinaDTO);
@@ -88,6 +94,7 @@ public class CursoSemestreDisciplinaController {
    * @return Response
    */
   @POST
+  @RolesAllowed("admin")
   @Path("/delete")
   public Response delete(CursoSemestreDisciplinaDTO cursoSemestreDisciplinaDTO) {
     try {

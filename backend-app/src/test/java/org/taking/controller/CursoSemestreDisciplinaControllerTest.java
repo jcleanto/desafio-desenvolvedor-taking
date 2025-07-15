@@ -2,6 +2,8 @@ package org.taking.controller;
 
 import io.quarkus.test.InjectMock;
 import io.quarkus.test.junit.QuarkusTest;
+import io.quarkus.test.security.TestSecurity;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -19,6 +21,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 @QuarkusTest
+@TestSecurity(user = "administrador", roles = {"admin", "aluno"})
 public class CursoSemestreDisciplinaControllerTest {
 
   @InjectMock

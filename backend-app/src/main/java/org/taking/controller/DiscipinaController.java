@@ -3,6 +3,8 @@ package org.taking.controller;
 import java.security.InvalidParameterException;
 import java.util.Map;
 import javax.naming.directory.InvalidAttributesException;
+
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.DefaultValue;
@@ -21,6 +23,8 @@ import lombok.AllArgsConstructor;
 import org.taking.model.Disciplina;
 import org.taking.service.DisciplinaService;
 
+import io.quarkus.security.Authenticated;
+
 @AllArgsConstructor
 @Path("/api/v1/disciplina")
 @Produces(MediaType.APPLICATION_JSON)
@@ -36,6 +40,7 @@ public class DiscipinaController {
      * @return Response
      */
     @GET
+    @RolesAllowed("admin")
     public Response getDisciplinas(
             @QueryParam("name") @DefaultValue("") String disciplinaName
     ) {
@@ -54,6 +59,7 @@ public class DiscipinaController {
      * @return Response
      */
     @GET
+    @RolesAllowed("admin")
     @Path("/{id}")
     public Response getById(@PathParam("id") long id) {
         try {
@@ -77,6 +83,7 @@ public class DiscipinaController {
      * @return Response
      */
     @POST
+    @RolesAllowed("admin")
     public Response create(Disciplina disciplina) {
         try {
             disciplinaService.create(disciplina);
@@ -100,6 +107,7 @@ public class DiscipinaController {
      * @return Response
      */
     @PUT
+    @RolesAllowed("admin")
     @Path("/{id}")
     public Response replace(@PathParam("id") long disciplinaId, Disciplina disciplina) {
         try {
@@ -122,6 +130,7 @@ public class DiscipinaController {
      * @return Response
      */
     @DELETE
+    @RolesAllowed("admin")
     @Path("/{id}")
     public Response delete(@PathParam("id") long disciplinaId) {
         var isDeleted = disciplinaService.delete(disciplinaId);

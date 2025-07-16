@@ -23,8 +23,6 @@ import lombok.AllArgsConstructor;
 import org.taking.model.Disciplina;
 import org.taking.service.DisciplinaService;
 
-import io.quarkus.security.Authenticated;
-
 @AllArgsConstructor
 @Path("/api/v1/disciplina")
 @Produces(MediaType.APPLICATION_JSON)

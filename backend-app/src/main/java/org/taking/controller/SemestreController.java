@@ -23,8 +23,6 @@ import lombok.AllArgsConstructor;
 import org.taking.model.Semestre;
 import org.taking.service.SemestreService;
 
-import io.quarkus.security.Authenticated;
-
 @AllArgsConstructor
 @Path("/api/v1/semestre")
 @Produces(MediaType.APPLICATION_JSON)

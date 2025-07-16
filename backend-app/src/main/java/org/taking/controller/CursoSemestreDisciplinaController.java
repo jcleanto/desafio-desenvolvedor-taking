@@ -18,7 +18,6 @@ import jakarta.ws.rs.core.Response.Status;
 import org.taking.dto.CursoSemestreDisciplinaDTO;
 import org.taking.service.CursoSemestreDisciplinaService;
 
-import io.quarkus.security.Authenticated;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor

@@ -22,8 +22,6 @@ import lombok.AllArgsConstructor;
 import org.taking.model.Curso;
 import org.taking.service.CursoService;
 
-import io.quarkus.security.Authenticated;
-
 @AllArgsConstructor
 @Path("/api/v1/curso")
 @Produces(MediaType.APPLICATION_JSON)

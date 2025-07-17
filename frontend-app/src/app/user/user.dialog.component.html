@@ -1,0 +1,43 @@
+<h2 mat-dialog-title>{{data.isEditingUser ? 'Editar' : 'Criar'}} Usuário</h2>
+<form [formGroup]="userForm" #formDirective="ngForm" (ngSubmit)="createOrUpdate(formDirective)">
+  <mat-dialog-content style="display: flex; flex-direction: column; align-items: flex-start; padding-top: 4px">
+    <mat-form-field appearance="outline">
+      <input matInput formControlName="username" placeholder="Login" type="text" maxlength="30" #usernameInput
+        autocomplete="off">
+      <mat-error NgIf="userForm.get('username')?.invalid">{{getErrorMessage('username')}}
+        <mat-hint align="end">{{usernameInput.value.length || 0}}/30</mat-hint>
+      </mat-error>
+    </mat-form-field>
+    <div style="display: flex; align-items: center;">
+      <mat-form-field appearance="outline" style="margin-right: 10px;">
+        <input matInput formControlName="firstName" placeholder="Nome" type="text" maxlength="30" #firstNameInput
+          autocomplete="off">
+        <mat-error NgIf="userForm.get('firstName')?.invalid">{{getErrorMessage('firstName')}}
+          <mat-hint align="end">{{firstNameInput.value.length || 0}}/30</mat-hint>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <input matInput formControlName="lastName" placeholder="Sobrenome" type="text" maxlength="30" #lastNameInput
+          autocomplete="off">
+        <mat-error NgIf="userForm.get('lastName')?.invalid">{{getErrorMessage('lastName')}}
+          <mat-hint align="end">{{lastNameInput.value.length || 0}}/30</mat-hint>
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <mat-form-field appearance="outline">
+      <input matInput formControlName="email" placeholder="Email" type="text" maxlength="50" #emailInput
+        autocomplete="off">
+      <mat-error NgIf="userForm.get('email')?.invalid">{{getErrorMessage('email')}}
+        <mat-hint align="end">{{emailInput.value.length || 0}}/50</mat-hint>
+      </mat-error>
+    </mat-form-field>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button mat-raised-button color="accent" (click)="cancelEdit()" type="button">
+      Cancelar
+    </button>
+    <button mat-flat-button [disabled]="userForm.invalid" color="primary" type="submit">
+      Salvar
+    </button>
+  </mat-dialog-actions>
+</form>

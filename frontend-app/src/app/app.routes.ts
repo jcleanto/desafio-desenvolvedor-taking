@@ -6,10 +6,17 @@ import { GradecurricularComponent } from './gradecurricular/gradecurricular.comp
 import { ArvoreCurricularComponent } from './arvore-curricular/arvore-curricular.component';
 import { SideLoginComponent } from './components/side-login/side-login.component';
 import { canActivateAuthRole } from './guards/auth-role.guard';
+import { UserComponent } from './user/user.component';
 
 
 export const routes: Routes = [
   { path: '', component: SideLoginComponent },
+  {
+    path: 'user',
+    component: UserComponent,
+    canActivate: [canActivateAuthRole],
+    data: { role: 'admin' },
+  },
   {
     path: 'curso',
     component: CursoComponent,

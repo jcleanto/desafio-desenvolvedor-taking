@@ -18,7 +18,7 @@ O administrador possui acesso completo aos Cruds e também acesso a Árvore Curr
 
 O aluno possui acesso apenas a Árvore Curricular de qualquer curso.
 
-Não foram feitas as telas de CRUD para Users do Keycloak, portanto o controle de acesso aos usuários está somente na UI do Keycloak.
+As telas de CRUD para Users do Keycloak foram disponibilizadas.
 
 Para atender requisitos de UX:
   - os Cruds foram todos feitos utilizando janelas modais, para criação e atualização de entidades
@@ -26,6 +26,7 @@ Para atender requisitos de UX:
   - foram tratadas as mensagens de erro nas requisições ao backend, mostrando mensagens amigáveis ao usuário
 
 Obs.: A API Rest está com segurança agora, e o frontend também está mandando corretamente o token de segurança, publicado 15/07/2025 as 19:08
+Obs.: As telas de CRUD para Users do Keycloak foram disponibilizadas, publicado 17/07/2025
 
 ## Requisitos
 
@@ -48,7 +49,7 @@ $ npm install
 $ ng serve
 ```
 
-Obs.: No painel de administração do Keycloak será necessário fazer a criação de um realm chamado: ```desafio-desenvolvedor-taking```, usando o arquivo de importação na pasta ```./backend-app/config/quarkus-realm.json```, para acessar com os usuários: ```login: administrador senha: 123``` | ```login: aluno senha: 123```, já com seus roles associados (admin e aluno).
+Obs.: No painel de administração do Keycloak (rodando na url: http://localhost:8188) será necessário fazer a criação de um realm chamado: ```desafio-desenvolvedor-taking```, usando o arquivo de importação na pasta ```./backend-app/src/main/resources/desafio-desenvolvedor-taking-realm.json```, para acessar com os usuários: ```login: administrador senha: 123``` | ```login: aluno senha: 123```, já com seus roles associados (admin e aluno).
 
 Acesse o Quarkus Swagger UI no endereço http://localhost:8080/q/swagger-ui e o Angular front end no endereço http://localhost:4200
 
